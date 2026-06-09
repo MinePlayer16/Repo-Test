@@ -5,16 +5,7 @@ var windows = r_msg2(app, "windows");
 
 var first = r_msg2(windows, "objectAtIndex:", 0);
 
-var subs = r_msg2(first, "subviews");
+var cls = r_msg2(first, "class");
 
-var count = r_msg2(subs, "count");
-
-log("Subviews = " + count);
-
-if (count > 0) {
-
-    var child = r_msg2(subs, "objectAtIndex:", 0);
-
-    if (child != 0)
-        log("Got child");
-}
+if (cls != 0)
+    log("Got class object");
