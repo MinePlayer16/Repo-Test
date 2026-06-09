@@ -1,19 +1,23 @@
-log("Testing");
+log("Step 1");
 
 var cls = r_class("SBIconController");
 
 if (cls != 0) {
 
+    log("Step 2");
+
     var ctrl = r_msg2(cls, "sharedInstance");
 
-    log("Controller: " + ctrl);
+    if (ctrl != 0) {
 
-    var list = r_msg2(ctrl, "currentRootIconList");
-    log("List: " + list);
+        log("Step 3");
 
-    var scroll = r_msg2(ctrl, "scrollView");
-    log("Scroll: " + scroll);
+        var mgr = r_msg2(ctrl, "iconManager");
 
-    var manager = r_msg2(ctrl, "iconManager");
-    log("Manager: " + manager);
+        if (mgr != 0) {
+            log("Step 4");
+        }
+    }
 }
+
+log("Done");
