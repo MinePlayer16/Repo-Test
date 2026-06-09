@@ -1,17 +1,8 @@
-log("Dumping windows");
+log("TEST");
 
-var app = r_msg2(r_class("UIApplication"), "sharedApplication");
-var windows = r_msg2(app, "windows");
+var cls = r_class("SBIconController");
 
-var count = r_msg2(windows, "count");
-
-for (var i = 0; i < count; i++) {
-
-    var w = r_msg2(windows, "objectAtIndex:", i);
-
-    var cls = "" + r_msg2(w, "class");
-
-    log(i + " -> " + cls);
-}
-
-log("Done");
+if (cls != 0)
+    log("SBIconController FOUND");
+else
+    log("SBIconController NOT FOUND");
