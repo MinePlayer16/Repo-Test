@@ -1,4 +1,4 @@
-log("Dock Pulse START");
+log("Glass Dock static");
 
 var cls = r_class("SBIconController");
 var ctrl = r_msg2(cls, "sharedInstance");
@@ -16,11 +16,9 @@ var bg = r_msg2(dockView, "backgroundView");
 
 if (bg != 0) {
 
-    var t = Date.now() / 500;
+    r_msg2_main(bg, "setAlpha:", 0.3);
 
-    var alpha = 0.5 + (Math.sin(t) * 0.3);
+    r_msg2_main(bg, "setHidden:", 0);
 
-    r_msg2_main(bg, "setAlpha:", alpha);
-
-    log("Dock pulsing alpha = " + alpha);
+    log("Glass dock applied once");
 }
