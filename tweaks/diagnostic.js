@@ -1,21 +1,20 @@
-log("Step 1");
+log("Test");
 
 var cls = r_class("SBIconController");
 
 if (cls != 0) {
 
-    log("Step 2");
-
     var ctrl = r_msg2(cls, "sharedInstance");
 
-    if (ctrl != 0) {
+    log("1");
 
-        log("Step 3");
+    if (r_responds(ctrl, "view")) {
+        log("2");
 
-        var mgr = r_msg2(ctrl, "iconManager");
+        var view = r_msg2(ctrl, "view");
 
-        if (mgr != 0) {
-            log("Step 4");
+        if (view != 0) {
+            log("3");
         }
     }
 }
