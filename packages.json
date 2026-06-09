@@ -1,0 +1,20 @@
+{
+  "repoName": "Iggy05's Test Repo",
+  "author": "Iggy05",
+  "tweaks": [
+    {
+      "id": "com.iggy05.hidedock",
+      "name": "Hide Dock Background",
+      "description": "Makes the dock invisible on the homescreen.",
+      "version": "1.0",
+      "scriptURL": "https://raw.githubusercontent.com/MinePlayer16/Repo-Test/refs/heads/main/tweaks/hide_dock.js"
+    },
+    {
+      "id": "com.iggy05.colordock",
+      "name": "Red Dock",
+      "description": "Turns the dock red.",
+      "version": "1.0",
+      "scriptURL": "https://raw.githubusercontent.com/MinePlayer16/Repo-Test/refs/heads/main/tweaks/red_dock.js"
+    }
+  ]
+}
