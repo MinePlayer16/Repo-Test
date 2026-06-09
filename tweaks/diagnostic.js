@@ -1,8 +1,14 @@
-var subs = r_msg2(first, "subviews");
+log("Searching windows");
 
-if (subs != 0)
-    log("Got subviews");
+var app = r_msg2(r_class("UIApplication"), "sharedApplication");
+var windows = r_msg2(app, "windows");
 
-var count = r_msg2(subs, "count");
+var count = r_msg2(windows, "count");
 
-log("Subviews = " + count);
+for (var i = 0; i < count; i++) {
+
+    var w = r_msg2(windows, "objectAtIndex:", i);
+
+    if (w != 0)
+        log("Window " + i + " = " + w);
+}
