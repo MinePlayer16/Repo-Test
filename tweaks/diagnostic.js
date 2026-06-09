@@ -1,8 +1,9 @@
-log("TEST");
-
 var cls = r_class("SBIconController");
 
-if (cls != 0)
-    log("SBIconController FOUND");
-else
-    log("SBIconController NOT FOUND");
+var ctrl = r_msg2(cls, "sharedInstance");
+
+log("ctrl = " + ctrl);
+
+var dock = r_msg2(ctrl, "dockListView");
+
+log("dock = " + dock);
