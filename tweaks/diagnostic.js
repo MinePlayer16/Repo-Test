@@ -1,7 +1,6 @@
-log("Glass Dock static");
+log("Fake cylinder layout");
 
-var cls = r_class("SBIconController");
-var ctrl = r_msg2(cls, "sharedInstance");
+var ctrl = r_msg2(r_class("SBIconController"), "sharedInstance");
 
 var mgr = r_msg2(ctrl, "iconManager");
 var dockList = r_msg2(mgr, "dockListView");
@@ -9,16 +8,24 @@ var dockList = r_msg2(mgr, "dockListView");
 if (dockList == 0)
     dockList = r_msg2(ctrl, "dockListView");
 
-var dockView = r_msg2(dockList, "superview");
-if (dockView == 0) dockView = dockList;
+var icons = r_msg2(dockList, "subviews");
 
-var bg = r_msg2(dockView, "backgroundView");
+if (icons != 0) {
 
-if (bg != 0) {
+    var count = r_msg2(icons, "count");
 
-    r_msg2_main(bg, "setAlpha:", 0.3);
+    for (var i = 0; i < count; i++) {
 
-    r_msg2_main(bg, "setHidden:", 0);
+        var icon = r_msg2(icons, "objectAtIndex:", i);
 
-    log("Glass dock applied once");
+        var angleOffset = (i - count/2) * 0.05;
+
+        r_msg2_main(
+            icon,
+            "setTransform:",
+            makeRotationTransform(angleOffset)
+        );
+    }
+
+    log("Cylinder static layout applied");
 }
