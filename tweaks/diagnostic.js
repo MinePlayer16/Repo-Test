@@ -1,21 +1,27 @@
-log("Test");
+log("Start");
 
 var cls = r_class("SBIconController");
 
 if (cls != 0) {
 
     var ctrl = r_msg2(cls, "sharedInstance");
+    var mgr = r_msg2(ctrl, "iconManager");
 
-    log("1");
+    if (mgr != 0) {
 
-    if (r_responds(ctrl, "view")) {
-        log("2");
+        log("Manager OK");
 
-        var view = r_msg2(ctrl, "view");
+        if (r_responds(mgr, "rootFolderController"))
+            log("rootFolderController");
 
-        if (view != 0) {
-            log("3");
-        }
+        if (r_responds(mgr, "currentRootIconList"))
+            log("currentRootIconList");
+
+        if (r_responds(mgr, "contentView"))
+            log("contentView");
+
+        if (r_responds(mgr, "folderController"))
+            log("folderController");
     }
 }
 
