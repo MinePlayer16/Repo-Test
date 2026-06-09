@@ -1,0 +1,48 @@
+{
+  "repoName": "Iggy05's Other Tests",
+  "author": "Iggy05",
+  "tweaks": [
+    {
+      "id": "com.iggy05.matrixlock",
+      "name": "Matrix LockScreen",
+      "description": "Matrix effect on the LS.",
+      "version": "1.0",
+      "scriptURL": "https://raw.githubusercontent.com/MinePlayer16/Repo-Test/refs/heads/main/tweaks/matrix_lock.js"
+    },
+    {
+      "id": "com.iggy05.rainbowdock",
+      "name": "Rainbow Dock",
+      "description": "Rainbow dock...",
+      "version": "1.0",
+      "scriptURL": "https://raw.githubusercontent.com/MinePlayer16/Repo-Test/refs/heads/main/tweaks/rainbow_dock.js"
+    },
+    {
+      "id": "com.iggy05.floatingicons",
+      "name": "Floating Icons",
+      "description": "I don't even know myself, probably won't work anyway.",
+      "version": "1.0",
+      "scriptURL": "https://raw.githubusercontent.com/MinePlayer16/Repo-Test/refs/heads/main/tweaks/floating_icons.js"
+    },
+    {
+      "id": "com.iggy05.cylinderwave",
+      "name": "Cylinder (Wave)",
+      "description": "Cylinder Wave effect.",
+      "version": "1.0",
+      "scriptURL": "https://raw.githubusercontent.com/MinePlayer16/Repo-Test/refs/heads/main/tweaks/cylinder_wave.js"
+    },
+    {
+      "id": "com.iggy05.cylinderbarrel",
+      "name": "Cylinder (Barrel)",
+      "description": "Cylinder Barrel effect.",
+      "version": "1.0",
+      "scriptURL": "https://raw.githubusercontent.com/MinePlayer16/Repo-Test/refs/heads/main/tweaks/cylinder_barrel.js"
+    },
+    {
+      "id": "com.iggy05.applaunchbounce",
+      "name": "App Launch Bounce",
+      "description": "App Launch Bounce...",
+      "version": "1.0",
+      "scriptURL": "https://raw.githubusercontent.com/MinePlayer16/Repo-Test/refs/heads/main/tweaks/app_launch_bounce.js"
+    }
+  ]
+}
