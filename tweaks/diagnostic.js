@@ -1,9 +1,8 @@
-log("Start");
+var subs = r_msg2(first, "subviews");
 
-var app = r_msg2(r_class("UIApplication"), "sharedApplication");
-var windows = r_msg2(app, "windows");
+if (subs != 0)
+    log("Got subviews");
 
-var first = r_msg2(windows, "objectAtIndex:", 0);
+var count = r_msg2(subs, "count");
 
-if (first != 0)
-    log("Got first window");
+log("Subviews = " + count);
