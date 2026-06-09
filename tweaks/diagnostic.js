@@ -1,28 +1,17 @@
 log("Start");
 
-var cls = r_class("SBIconController");
+var appCls = r_class("UIApplication");
 
-if (cls != 0) {
+var app = r_msg2(appCls, "sharedApplication");
 
-    var ctrl = r_msg2(cls, "sharedInstance");
-    var mgr = r_msg2(ctrl, "iconManager");
+if (app != 0)
+    log("Got app");
 
-    if (mgr != 0) {
+var windows = r_msg2(app, "windows");
 
-        log("Manager OK");
+if (windows != 0)
+    log("Got windows");
 
-        if (r_responds(mgr, "rootFolderController"))
-            log("rootFolderController");
+var count = r_msg2(windows, "count");
 
-        if (r_responds(mgr, "currentRootIconList"))
-            log("currentRootIconList");
-
-        if (r_responds(mgr, "contentView"))
-            log("contentView");
-
-        if (r_responds(mgr, "folderController"))
-            log("folderController");
-    }
-}
-
-log("Done");
+log("Count = " + count);
