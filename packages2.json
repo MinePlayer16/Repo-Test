@@ -15,6 +15,20 @@
       "description": "Attempts parallax effects on icon pages.",
       "version": "1.0",
       "scriptURL": "https://raw.githubusercontent.com/MinePlayer16/Repo-Test/refs/heads/main/tweaks/parallax_scale_pages.js"
+    },
+    {
+      "id": "com.iggy05.dockfade",
+      "name": "Dock Fade",
+      "description": "Fades the dock...",
+      "version": "1.0",
+      "scriptURL": "https://raw.githubusercontent.com/MinePlayer16/Repo-Test/refs/heads/main/tweaks/fade_dock.js"
+    },
+    {
+      "id": "com.iggy05.diagnostics",
+      "name": "Diagnostics",
+      "description": "Just a test...",
+      "version": "1.0",
+      "scriptURL": "https://raw.githubusercontent.com/MinePlayer16/Repo-Test/refs/heads/main/tweaks/diagnostic.js"
     }
   ]
 }
