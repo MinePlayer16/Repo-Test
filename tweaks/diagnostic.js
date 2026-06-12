@@ -1,31 +1,38 @@
-log("Fake cylinder layout");
+// red_clock.js
 
-var ctrl = r_msg2(r_class("SBIconController"), "sharedInstance");
+log("Attempting to color status bar text RED...");
 
-var mgr = r_msg2(ctrl, "iconManager");
-var dockList = r_msg2(mgr, "dockListView");
+var colorCls = r_class("UIColor");
+var redColor = r_msg2(colorCls, "systemRedColor");
 
-if (dockList == 0)
-    dockList = r_msg2(ctrl, "dockListView");
+if (redColor == 0) {
+    redColor = r_msg2(colorCls, "redColor");
+}
 
-var icons = r_msg2(dockList, "subviews");
+var appCls = r_class("UIApplication");
+var app = r_msg2(appCls, "sharedApplication");
 
-if (icons != 0) {
+var statusBar = r_msg2(app, "statusBar");
 
-    var count = r_msg2(icons, "count");
+if (statusBar != 0) {
+
+    var subviews = r_msg2(statusBar, "subviews");
+    var count = r_msg2(subviews, "count");
 
     for (var i = 0; i < count; i++) {
 
-        var icon = r_msg2(icons, "objectAtIndex:", i);
+        var view = r_msg3(subviews, "objectAtIndex:", i);
 
-        var angleOffset = (i - count/2) * 0.05;
+        var clsName = r_msg2(view, "className");
 
-        r_msg2_main(
-            icon,
-            "setTransform:",
-            makeRotationTransform(angleOffset)
-        );
+        if (clsName && clsName.indexOf("_UIStatusBarStringView") != -1) {
+
+            r_msg2_main(view, "setTextColor:", redColor);
+
+            log("Changed _UIStatusBarStringView text color.");
+        }
     }
 
-    log("Cylinder static layout applied");
+} else {
+    log("Status bar not found.");
 }
