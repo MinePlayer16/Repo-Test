@@ -21,7 +21,7 @@ if (statusBar != 0) {
 
     for (var i = 0; i < count; i++) {
 
-        var view = r_msg3(subviews, "objectAtIndex:", i);
+        var view = r_msg2(subviews, "objectAtIndex:", i);
 
         var clsName = r_msg2(view, "className");
 
