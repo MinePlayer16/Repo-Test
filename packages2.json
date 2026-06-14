@@ -29,6 +29,20 @@
       "description": "Just a test...",
       "version": "1.0",
       "scriptURL": "https://raw.githubusercontent.com/MinePlayer16/Repo-Test/refs/heads/main/tweaks/diagnostic.js"
+    },
+    {
+      "id": "com.iggy05.modclock",
+      "name": "Mod Clock",
+      "description": "Just a test...",
+      "version": "1.0",
+      "scriptURL": "https://raw.githubusercontent.com/MinePlayer16/Repo-Test/refs/heads/main/tweaks/mod_clock.js"
+    },
+    {
+      "id": "com.iggy05.hidepill",
+      "name": "Hide SearchPIll",
+      "description": "Just a test...",
+      "version": "1.0",
+      "scriptURL": "https://raw.githubusercontent.com/MinePlayer16/Repo-Test/refs/heads/main/tweaks/hide_pill.js"
     }
   ]
 }
