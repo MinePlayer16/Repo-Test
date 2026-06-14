@@ -1,24 +1,46 @@
-//mod_clock.js
-log("JS Engine Started: Mod Clock Tweak Initializing...");
+// color_statusbar_bg.js
+log("JS Engine Started: Coloring Status Bar Background...");
 
-// --- 2. Modify Clock in Status Bar ---
+// 1. Define the color (e.g., systemGreenColor, systemRedColor, cyanColor)
+var colorClass = r_class("UIColor");
+var customColor = r_msg2(colorClass, "systemGreenColor"); 
 
-// The clock text inside notched status bars uses _UIStatusBarStringView
-var stringViewClass = r_class("_UIStatusBarStringView");
-if (stringViewClass != 0) {
-    var clockAppearance = r_msg2(stringViewClass, "appearance");
-    if (clockAppearance != 0) {
-        // Change color to green
-        var colorClass = r_class("UIColor");
-        var customColor = r_msg2(colorClass, "systemGreenColor"); 
-        
-        r_msg2_main(clockAppearance, "setTextColor:", customColor);
-        log("SUCCESS: Status bar clock text color modified to green.");
-        
-        // Note: For changing fonts, you would typically need a bridge method capable 
-        // of passing primitive numbers (like float for size), which depends on your 
-        // JS engine's specific message passing capabilities for multiple arguments.
+// --- TARGET A: The System-Wide Status Bar Instance ---
+var app = r_msg2(r_class("UIApplication"), "sharedApplication");
+if (app != 0) {
+    var statusBar = r_msg2(app, "statusBar");
+    if (statusBar != 0) {
+        r_msg2_main(statusBar, "setBackgroundColor:", customColor);
+        log("SUCCESS: Colored active UIApplication statusBar.");
     }
-} else {
-    log("ERROR: _UIStatusBarStringView not found.");
+}
+
+// --- TARGET B: SpringBoard's Home Screen Legibility View ---
+var sbControllerClass = r_class("SBIconController");
+if (sbControllerClass != 0) {
+    var ctrl = r_msg2(sbControllerClass, "sharedInstance");
+    var hsView = r_msg2(ctrl, "view"); 
+    
+    if (hsView != 0) {
+        // Attempting to hit the SBFStatusBarLegibilityView from the UI tree
+        var legibilityView = r_msg2(hsView, "statusBarLegibilityView");
+        if (legibilityView == 0) {
+            legibilityView = r_msg2(hsView, "_statusBarLegibilityView");
+        }
+        
+        if (legibilityView != 0) {
+            r_msg2_main(legibilityView, "setBackgroundColor:", customColor);
+            log("SUCCESS: Colored SBHomeScreenView legibility background.");
+        }
+    }
+}
+
+// --- TARGET C: UIAppearance Fallback for _UIStatusBar ---
+var internalStatusBarClass = r_class("_UIStatusBar");
+if (internalStatusBarClass != 0) {
+    var appearance = r_msg2(internalStatusBarClass, "appearance");
+    if (appearance != 0) {
+        r_msg2_main(appearance, "setBackgroundColor:", customColor);
+        log("SUCCESS: Applied UIAppearance background color to _UIStatusBar.");
+    }
 }
