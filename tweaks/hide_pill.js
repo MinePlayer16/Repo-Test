@@ -1,60 +1,61 @@
-// hide_pill.js
-log("JS Engine Started: Safely Hiding Search Pill...");
+log("[SearchPill-JS] Fast-hiding SBFolderScrollAccessoryView...");
 
-var pillClass = r_class("SBHSearchPillView");
+var homeWindowCls = r_class("SBHomeScreenWindow");
+var accessoryCls  = r_class("SBFolderScrollAccessoryView");
+var iconListCls   = r_class("SBIconListView"); 
 
-// This function acts like a scanner, crawling the UI tree layer by layer
-function scanAndHidePill(view) {
-    if (view == 0) return 0;
+if (accessoryCls === "0x0") {
+    log("[SearchPill-JS] SBFolderScrollAccessoryView not found.");
+} else {
+    var app = r_msg2_main(r_class("UIApplication"), "sharedApplication");
+    var windows = r_msg2_main(app, "windows");
+    var winCount = parseInt(r_msg2_main(windows, "count"), 16);
     
-    // Check if the current view in the tree is our target
-    var isTarget = r_msg2(view, "isKindOfClass:", pillClass);
-    if (isTarget) {
-        // Target acquired, hide it safely on the main thread
-        r_msg2_main(view, "setHidden:", 1);
-        r_msg2_main(view, "setAlpha:", 0.0);
-        return 1; // Signal that we found it
+    var homeWindow = "0x0";
+    for (var i = 0; i < winCount; i++) {
+        var win = r_msg2_main(windows, "objectAtIndex:", i);
+        if (r_msg2_main(win, "class") === homeWindowCls) {
+            homeWindow = win;
+            break;
+        }
     }
     
-    // If not, get all child views (subviews) and scan them
-    var subviews = r_msg2(view, "subviews");
-    if (subviews != 0) {
-        var count = r_msg2(subviews, "count");
-        for (var i = 0; i < count; i++) {
-            var child = r_msg2(subviews, "objectAtIndex:", i);
-            if (scanAndHidePill(child)) {
-                return 1; // Stop scanning once found
+    if (homeWindow === "0x0") {
+        log("[SearchPill-JS] SBHomeScreenWindow not found.");
+    } else {
+        var found = false; // The Short-Circuit Flag
+        
+        function fastFindAndHide(view, depth) {
+            // If we already found it, stop executing immediately!
+            if (view === "0x0" || depth > 8 || found) return;
+            
+            var cls = r_msg2_main(view, "class");
+            if (cls === iconListCls) return; // Skip icons
+            
+            if (cls === accessoryCls) {
+                r_msg2_main(view, "setHidden:", 1);
+                r_msg2_float(view, "setAlpha:", 0.0);
+                
+                found = true; // Trigger the short-circuit
+                log("[SearchPill-JS] BAM! Hid AccessoryView at depth " + depth);
+                return;
+            }
+            
+            var subviews = r_msg2_main(view, "subviews");
+            if (subviews !== "0x0") {
+                var childCount = parseInt(r_msg2_main(subviews, "count"), 16);
+                for (var j = 0; j < childCount; j++) {
+                    if (found) break; // Break out of the loop instantly
+                    var child = r_msg2_main(subviews, "objectAtIndex:", j);
+                    fastFindAndHide(child, depth + 1);
+                }
             }
         }
-    }
-    return 0;
-}
-
-// 1. Get the SpringBoard Icon Controller
-var sbIconCtrlClass = r_class("SBIconController");
-if (sbIconCtrlClass != 0 && pillClass != 0) {
-    var ctrl = r_msg2(sbIconCtrlClass, "sharedInstance");
-    
-    // 2. Start from the highest level window to guarantee we catch it
-    var rootWindow = r_msg2(ctrl, "window");
-    
-    if (rootWindow == 0) {
-        // Fallback to the main application window if the controller window is null
-        var app = r_msg2(r_class("UIApplication"), "sharedApplication");
-        rootWindow = r_msg2(app, "keyWindow");
-    }
-    
-    if (rootWindow != 0) {
-        // 3. Execute the scan
-        var found = scanAndHidePill(rootWindow);
-        if (found) {
-            log("SUCCESS: SBHSearchPillView found via tree traversal and hidden!");
-        } else {
-            log("WARNING: SBHSearchPillView not found in the current view tree.");
+        
+        fastFindAndHide(homeWindow, 0);
+        
+        if (!found) {
+            log("[SearchPill-JS] Could not find the AccessoryView.");
         }
-    } else {
-        log("ERROR: Could not locate a root window to begin the scan.");
     }
-} else {
-    log("ERROR: Required classes not found. SpringBoard might not be fully loaded.");
 }
