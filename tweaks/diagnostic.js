@@ -1,11 +1,11 @@
 // @param: switch | enableBlinker | Enable Test Blinker | true
 
-log("Test Blinker: Script avviato...");
+log("Test Blinker: Script avviato, generazione sicura...");
 
 if (typeof enableBlinker !== 'undefined' && enableBlinker === true) {
     var isRed = true;
     
-    // 1. Troviamo la backgroundView del Dock
+    // 1. Troviamo il Dock
     var cls = r_class("SBIconController");
     var ctrl = r_msg2(cls, "sharedInstance");
     var mgr = r_msg2(ctrl, "iconManager");
@@ -18,31 +18,39 @@ if (typeof enableBlinker !== 'undefined' && enableBlinker === true) {
     var bgView = r_msg2(dockView, "backgroundView");
     
     if (bgView !== "0x0") {
-        log("Test Blinker: Dock agganciato! Avvio Polling Rate (2000ms)...");
+        log("Test Blinker: Dock agganciato! Alloco i colori in memoria fissa...");
         
-        // 2. IL TEST DEL POLLING RATE
+        var ciColorCls = r_class("CIColor");
+        var uiColorCls = r_class("UIColor");
+        
+        // --- CREAZIONE COLORE ROSSO ---
+        var strRed = r_nsstr("1.0 0.0 0.0 1.0");
+        var ciRed = r_msg2(ciColorCls, "colorWithString:", strRed);
+        var colorRed = r_msg2(uiColorCls, "colorWithCIColor:", ciRed);
+        r_msg2(colorRed, "retain"); // MAGIA: Lo proteggiamo dal Garbage Collector!
+        r_msg2(strRed, "release");  // Puliamo la stringa che non ci serve più
+        
+        // --- CREAZIONE COLORE BLU ---
+        var strBlue = r_nsstr("0.0 0.0 1.0 1.0");
+        var ciBlue = r_msg2(ciColorCls, "colorWithString:", strBlue);
+        var colorBlue = r_msg2(uiColorCls, "colorWithCIColor:", ciBlue);
+        r_msg2(colorBlue, "retain"); // MAGIA: Lo proteggiamo dal Garbage Collector!
+        r_msg2(strBlue, "release");  // Puliamo la stringa
+        
+        log("Test Blinker: Avvio Polling Loop Ottimizzato...");
+        
+        // 2. IL LOOP PERFETTO (Zero allocazioni di memoria)
         setInterval(function() {
-            // Scegliamo la stringa del colore (R G B A)
-            var colorString = isRed ? "1.0 0.0 0.0 1.0" : "0.0 0.0 1.0 1.0"; 
+            var colorToApply = isRed ? colorRed : colorBlue;
             
-            // Usiamo la nuova API r_nsstr per evitare i float!
-            var remoteStr = r_nsstr(colorString);
-            var ciColorObj = r_msg2(r_class("CIColor"), "colorWithString:", remoteStr);
-            var finalColorPtr = r_msg2(r_class("UIColor"), "colorWithCIColor:", ciColorObj);
-            
-            // Pulizia memoria della stringa
-            r_msg2(remoteStr, "release"); 
-            
-            // 3. Applichiamo la modifica visiva sul Main Thread
             r_msg2_main(bgView, "setHidden:", 0);
-            r_msg2_main(bgView, "setBackgroundColor:", finalColorPtr);
+            r_msg2_main(bgView, "setBackgroundColor:", colorToApply);
             
             log("Test Blinker: Tick eseguito. Colore cambiato in " + (isRed ? "Rosso" : "Blu"));
             
-            // Invertiamo lo stato per il prossimo ciclo
             isRed = !isRed;
             
-        }, 2000); // 2000 millisecondi = 2 secondi
+        }, 2000); 
         
     } else {
         log("Test Blinker: Errore, Dock non trovato.");
