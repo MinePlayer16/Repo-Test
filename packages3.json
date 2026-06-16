@@ -43,6 +43,13 @@
       "description": "App Launch Bounce...",
       "version": "1.0",
       "scriptURL": "https://raw.githubusercontent.com/MinePlayer16/Repo-Test/refs/heads/main/tweaks/app_launch_bounce.js"
+    },
+    {
+      "id": "com.iggy05.flexbutbreaks",
+      "name": "FlexButBreaks",
+      "description": "Like a miniminimicro Flex",
+      "version": "1.0",
+      "scriptURL": "https://raw.githubusercontent.com/MinePlayer16/Repo-Test/refs/heads/main/tweaks/flexbutbreaks.js"
     }
   ]
 }
