@@ -1,5 +1,4 @@
 // @param: switch | enableBlinker | Enable Test Blinker | true
-// @param: slider | dockAlpha | Trasparenza Dock | 0.5 | 0.0-1.0
 
 log("Test Blinker: Script avviato, generazione sicura...");
 
