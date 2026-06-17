@@ -34,7 +34,6 @@ if (accessoryCls === "0x0") {
             
             if (cls === accessoryCls) {
                 r_msg2_main(view, "setHidden:", 1);
-                r_msg2_float(view, "setAlpha:", 0.0);
                 
                 found = true; // Trigger the short-circuit
                 log("[SearchPill-JS] BAM! Hid AccessoryView at depth " + depth);
