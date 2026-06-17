@@ -3,39 +3,11 @@
   "author": "Iggy05",
   "tweaks": [
     {
-      "id": "com.iggy05.iconrotation",
-      "name": "CylinderMEGALiteTest",
-      "description": "Should make the icons rotate as you scroll.",
-      "version": "1.0",
-      "scriptURL": "https://raw.githubusercontent.com/MinePlayer16/Repo-Test/refs/heads/main/tweaks/icon_rotation.js"
-    },
-    {
-      "id": "com.iggy05.parallaxscalepages",
-      "name": "CylinderULTRALiteTest",
-      "description": "Attempts parallax effects on icon pages.",
-      "version": "1.0",
-      "scriptURL": "https://raw.githubusercontent.com/MinePlayer16/Repo-Test/refs/heads/main/tweaks/parallax_scale_pages.js"
-    },
-    {
-      "id": "com.iggy05.dockfade",
-      "name": "Dock Fade",
-      "description": "Fades the dock...",
-      "version": "1.0",
-      "scriptURL": "https://raw.githubusercontent.com/MinePlayer16/Repo-Test/refs/heads/main/tweaks/fade_dock.js"
-    },
-    {
       "id": "com.iggy05.diagnostics",
       "name": "Diagnostics",
       "description": "Just a test...",
       "version": "1.0",
       "scriptURL": "https://raw.githubusercontent.com/MinePlayer16/Repo-Test/refs/heads/main/tweaks/diagnostic.js"
-    },
-    {
-      "id": "com.iggy05.modclock",
-      "name": "Mod Clock",
-      "description": "Just a test...",
-      "version": "1.0",
-      "scriptURL": "https://raw.githubusercontent.com/MinePlayer16/Repo-Test/refs/heads/main/tweaks/mod_clock.js"
     },
     {
       "id": "com.iggy05.hidepill",
