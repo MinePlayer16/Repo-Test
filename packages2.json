@@ -12,7 +12,7 @@
     {
       "id": "com.iggy05.hidepill",
       "name": "Hide SearchPIll",
-      "description": "Just a test...",
+      "description": "Hide Search Pill (tested on iOS 18)",
       "version": "1.0",
       "scriptURL": "https://raw.githubusercontent.com/MinePlayer16/Repo-Test/refs/heads/main/tweaks/hide_pill.js"
     }
