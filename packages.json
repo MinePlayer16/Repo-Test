@@ -12,7 +12,7 @@
     {
       "id": "com.iggy05.dockcolor",
       "name": "Color Dock",
-      "description": "Color of your choice for your Dock!.",
+      "description": "Choose the color of your Dock!.",
       "version": "1.0",
       "scriptURL": "https://raw.githubusercontent.com/MinePlayer16/Repo-Test/refs/heads/main/tweaks/color_dock.js"
     }
