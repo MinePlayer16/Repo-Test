@@ -1,6 +1,6 @@
 // @param: switch | enableBlinker | Enable Test Blinker | true
 
-log("Test Blinker: Script avviato, generazione sicura...");
+log("Test Blinker: Running script...");
 
 if (typeof enableBlinker !== 'undefined' && enableBlinker === true) {
     var isRed = true;
@@ -18,7 +18,7 @@ if (typeof enableBlinker !== 'undefined' && enableBlinker === true) {
     var bgView = r_msg2(dockView, "backgroundView");
     
     if (bgView !== "0x0") {
-        log("Test Blinker: Dock agganciato! Alloco i colori in memoria fissa...");
+        log("Test Blinker: Dock found, allocating colors...");
         
         var ciColorCls = r_class("CIColor");
         var uiColorCls = r_class("UIColor");
@@ -37,7 +37,7 @@ if (typeof enableBlinker !== 'undefined' && enableBlinker === true) {
         r_msg2(colorBlue, "retain"); // MAGIA: Lo proteggiamo dal Garbage Collector!
         r_msg2(strBlue, "release");  // Puliamo la stringa
         
-        log("Test Blinker: Avvio Polling Loop Ottimizzato...");
+        log("Test Blinker: running polling loop...");
         
         // 2. IL LOOP PERFETTO (Zero allocazioni di memoria)
         setInterval(function() {
@@ -46,13 +46,13 @@ if (typeof enableBlinker !== 'undefined' && enableBlinker === true) {
             r_msg2_main(bgView, "setHidden:", 0);
             r_msg2_main(bgView, "setBackgroundColor:", colorToApply);
             
-            log("Test Blinker: Tick eseguito. Colore cambiato in " + (isRed ? "Rosso" : "Blu"));
+            log("Test Blinker: Tick. Color changed to " + (isRed ? "Red" : "Blue"));
             
             isRed = !isRed;
             
         }, 2000); 
         
     } else {
-        log("Test Blinker: Errore, Dock non trovato.");
+        log("Test Blinker: Error, dock not found.");
     }
 }
