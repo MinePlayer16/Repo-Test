@@ -12,9 +12,18 @@
     {
       "id": "com.iggy05.dockcolor",
       "name": "Color Dock",
-      "description": "Choose the color of your Dock!.",
+      "description": "Choose the color of your Dock!",
       "version": "1.0",
       "scriptURL": "https://raw.githubusercontent.com/MinePlayer16/Repo-Test/refs/heads/main/tweaks/color_dock.js"
+    },
+    {
+      "id": "com.iggy05.floatingicons",
+      "name": "Floating Icons",
+      "description": "Animates the Home Screen!",
+      "version": "1.0",
+      "scriptURL": "https://raw.githubusercontent.com/MinePlayer16/Repo-Test/refs/heads/main/tweaks/floating_icons.js"
     }
   ]
 }
+
+
