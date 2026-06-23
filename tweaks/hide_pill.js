@@ -23,10 +23,9 @@ if (accessoryCls === "0x0") {
     if (homeWindow === "0x0") {
         log("[SearchPill-JS] SBHomeScreenWindow not found.");
     } else {
-        var found = false; // The Short-Circuit Flag
+        var found = false; // flag to exit the loop
         
         function fastFindAndHide(view, depth) {
-            // If we already found it, stop executing immediately!
             if (view === "0x0" || depth > 8 || found) return;
             
             var cls = r_msg2_main(view, "class");
@@ -35,7 +34,7 @@ if (accessoryCls === "0x0") {
             if (cls === accessoryCls) {
                 r_msg2_main(view, "setHidden:", 1);
                 
-                found = true; // Trigger the short-circuit
+                found = true; //to exit the loop
                 log("[SearchPill-JS] Hid AccessoryView at depth " + depth);
                 return;
             }
@@ -44,7 +43,7 @@ if (accessoryCls === "0x0") {
             if (subviews !== "0x0") {
                 var childCount = parseInt(r_msg2_main(subviews, "count"), 16);
                 for (var j = 0; j < childCount; j++) {
-                    if (found) break; // Break out of the loop instantly
+                    if (found) break;
                     var child = r_msg2_main(subviews, "objectAtIndex:", j);
                     fastFindAndHide(child, depth + 1);
                 }
