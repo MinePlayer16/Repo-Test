@@ -1,51 +1,58 @@
-// @param: color | dockColor | Dock Color | #FF0000
+// @param: switch | enableBlinker | Enable Test Blinker | true
 
-log("[Dock-JS] Starting Static Color Dock Tweak...");
+log("Test Blinker: Running script...");
 
-//default to be safe
-var safeColor = (typeof dockColor !== 'undefined' && dockColor !== "") ? dockColor : "#FF0000";
-
-var hex = safeColor.replace('#', '');
-var r = parseInt(hex.substring(0, 2), 16) / 255.0;
-var g = parseInt(hex.substring(6, 8), 16) / 255.0;
-var b = parseInt(hex.substring(8, 10), 16) / 255.0;
-
-var cls = r_class("SBIconController");
-if (cls !== "0x0") {
+if (typeof enableBlinker !== 'undefined' && enableBlinker === true) {
+    var isRed = true;
+    
+    // Dock
+    var cls = r_class("SBIconController");
     var ctrl = r_msg2(cls, "sharedInstance");
     var mgr = r_msg2(ctrl, "iconManager");
-    
     var dockList = r_msg2(mgr, "dockListView");
-    if (dockList === "0x0") {
-        dockList = r_msg2(ctrl, "dockListView");
-    }
     
+    if (dockList === "0x0") { dockList = r_msg2(ctrl, "dockListView"); }
     var dockView = r_msg2(dockList, "superview");
-    if (dockView === "0x0") {
-        dockView = dockList;
-    }
-
+    if (dockView === "0x0") { dockView = dockList; }
+    
     var bgView = r_msg2(dockView, "backgroundView");
+    
     if (bgView !== "0x0") {
+        log("Test Blinker: Dock found, allocating colors...");
         
-        // CIColor
-        var colorString = r + " " + g + " " + b + " 1.0";
-        var remoteStr = r_nsstr(colorString);
-        var ciColor = r_msg2(r_class("CIColor"), "colorWithString:", remoteStr);
-        var customColorPtr = r_msg2(r_class("UIColor"), "colorWithCIColor:", ciColor);
+        var ciColorCls = r_class("CIColor");
+        var uiColorCls = r_class("UIColor");
         
-        if (customColorPtr !== "0x0") {
-            // Apply the color
-            r_msg2_main(bgView, "setHidden:", 0);
-            r_msg2_main(bgView, "setBackgroundColor:", customColorPtr);
+        //red
+        var strRed = r_nsstr("0.0 1.0 0.0 1.0");
+        var ciRed = r_msg2(ciColorCls, "colorWithString:", strRed);
+        var colorRed = r_msg2(uiColorCls, "colorWithCIColor:", ciRed);
+        r_msg2(colorRed, "retain"); // MAGIA: Lo proteggiamo dal Garbage Collector!
+        r_msg2(strRed, "release");  // Puliamo la stringa che non ci serve più
+        
+        //blue
+        var strBlue = r_nsstr("0.6 0.3 0.1 1.0");
+        var ciBlue = r_msg2(ciColorCls, "colorWithString:", strBlue);
+        var colorBlue = r_msg2(uiColorCls, "colorWithCIColor:", ciBlue);
+        r_msg2(colorBlue, "retain"); // MAGIA: Lo proteggiamo dal Garbage Collector!
+        r_msg2(strBlue, "release");  // Puliamo la stringa
+        
+        log("Test Blinker: running polling loop...");
+        
+        //loop
+        setInterval(function() {
+            var colorToApply = isRed ? colorRed : colorBlue;
             
-            log("[Dock-JS] Success! Dock has been colored.");
-        } else {
-            log("[Dock-JS] Error: Could not create UIColor pointer.");
-        }
+            r_msg2_main(bgView, "setHidden:", 0);
+            r_msg2_main(bgView, "setBackgroundColor:", colorToApply);
+            
+            log("Test Blinker: Tick. Color changed to " + (isRed ? "Red" : "Blue"));
+            
+            isRed = !isRed;
+            
+        }, 2000); 
         
-        r_msg2(remoteStr, "release");
     } else {
-        log("[Dock-JS] Error: Could not find Dock background view. (was only tested on iOS 18)");
+        log("Test Blinker: Error, dock not found.");
     }
 }
