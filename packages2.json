@@ -17,8 +17,8 @@
       "scriptURL": "https://raw.githubusercontent.com/MinePlayer16/Repo-Test/refs/heads/main/tweaks/hide_pill.js"
     },
     {
-      "id": "com.iggy05.dynatest",
-      "name": "Othertest",
+      "id": "com.iggy05.dynatestt",
+      "name": "Othertestt",
       "description": "Just another test...",
       "version": "1.0",
       "scriptURL": "https://raw.githubusercontent.com/MinePlayer16/Repo-Test/refs/heads/main/tweaks/color_dock_dynamictest.js"
