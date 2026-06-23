@@ -1,6 +1,6 @@
 // hide_dock.js
 
-log("JS Engine Started: Hiding Dock...");
+log("JS Hiding Dock...");
 
 var cls = r_class("SBIconController");
 if (cls != 0) {
@@ -20,7 +20,7 @@ if (cls != 0) {
     var bgView = r_msg2(dockView, "backgroundView");
     if (bgView != 0) {
         r_msg2_main(bgView, "setHidden:", 1);
-        log("SUCCESS: Dock hidden instantly via JavaScript!");
+        log("SUCCESS: Dock hidden.");
     } else {
         log("ERROR: backgroundView not found.");
     }
