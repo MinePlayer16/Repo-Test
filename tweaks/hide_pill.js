@@ -1,4 +1,4 @@
-log("[SearchPill-JS] Fast-hiding SBFolderScrollAccessoryView...");
+log("[SearchPill-JS] Hiding SBFolderScrollAccessoryView...");
 
 var homeWindowCls = r_class("SBHomeScreenWindow");
 var accessoryCls  = r_class("SBFolderScrollAccessoryView");
