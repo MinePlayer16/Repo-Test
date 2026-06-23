@@ -2,11 +2,9 @@
 
 log("[Dock-JS] Starting Static Color Dock Tweak...");
 
-// SISTEMA DI SICUREZZA: Controlla se Cyanide ha iniettato 'dockColor'
-// Se non esiste (undefined), usa il rosso di default.
+//default to be safe
 var safeColor = (typeof dockColor !== 'undefined' && dockColor !== "") ? dockColor : "#FF0000";
 
-// Usiamo safeColor invece della variabile diretta per estrarre RGB
 var hex = safeColor.replace('#', '');
 var r = parseInt(hex.substring(0, 2), 16) / 255.0;
 var g = parseInt(hex.substring(2, 4), 16) / 255.0;
@@ -30,16 +28,14 @@ if (cls !== "0x0") {
     var bgView = r_msg2(dockView, "backgroundView");
     if (bgView !== "0x0") {
         
-        // 1. Nuovo pattern di allocazione sicura IPC (tramite CIColor)
+        // CIColor
         var colorString = r + " " + g + " " + b + " 1.0";
-        var remoteStr = r_nsstr(colorString); // Alloca in memoria di SpringBoard
-        
-        // 2. Generiamo il UIColor nativo
+        var remoteStr = r_nsstr(colorString);
         var ciColor = r_msg2(r_class("CIColor"), "colorWithString:", remoteStr);
         var customColorPtr = r_msg2(r_class("UIColor"), "colorWithCIColor:", ciColor);
         
         if (customColorPtr !== "0x0") {
-            // 3. Applichiamo il colore scelto dall'utente sul Thread Principale per la UI
+            // Apply the color
             r_msg2_main(bgView, "setHidden:", 0);
             r_msg2_main(bgView, "setBackgroundColor:", customColorPtr);
             
@@ -51,6 +47,6 @@ if (cls !== "0x0") {
         // 4. Pulizia della memoria (FONDAMENTALE per i tweak statici per non lasciare leak nella RAM)
         r_msg2(remoteStr, "release");
     } else {
-        log("[Dock-JS] Error: Could not find Dock background view.");
+        log("[Dock-JS] Error: Could not find Dock background view. (was only tested on iOS 18)");
     }
 }
