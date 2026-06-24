@@ -29,13 +29,6 @@
       "description": "Just another test...",
       "version": "1.0",
       "scriptURL": "https://raw.githubusercontent.com/MinePlayer16/Repo-Test/refs/heads/main/tweaks/datetime.js"
-    },
-    {
-      "id": "com.iggy05.recc",
-      "name": "Recc",
-      "description": "Just another test...",
-      "version": "1.0",
-      "scriptURL": "https://raw.githubusercontent.com/MinePlayer16/Repo-Test/refs/heads/main/tweaks/rec.js"
     }
   ]
 }
