@@ -27,19 +27,19 @@ if (typeof enableBlinker !== 'undefined' && enableBlinker === true) {
         var strRed = r_nsstr("1.0 0.0 0.0 1.0");
         var ciRed = r_msg2(ciColorCls, "colorWithString:", strRed);
         var colorRed = r_msg2(uiColorCls, "colorWithCIColor:", ciRed);
-        r_msg2(colorRed, "retain"); // MAGIA: Lo proteggiamo dal Garbage Collector!
-        r_msg2(strRed, "release");  // Puliamo la stringa che non ci serve più
+        r_msg2(colorRed, "retain");
+        r_msg2(strRed, "release");
         
         //blue
         var strBlue = r_nsstr("0.0 0.0 1.0 1.0");
         var ciBlue = r_msg2(ciColorCls, "colorWithString:", strBlue);
         var colorBlue = r_msg2(uiColorCls, "colorWithCIColor:", ciBlue);
-        r_msg2(colorBlue, "retain"); // MAGIA: Lo proteggiamo dal Garbage Collector!
-        r_msg2(strBlue, "release");  // Puliamo la stringa
+        r_msg2(colorBlue, "retain");
+        r_msg2(strBlue, "release");
         
         log("Test Blinker: running polling loop...");
         
-        //loop
+        //loop (2 seconds)
         setInterval(function() {
             var colorToApply = isRed ? colorRed : colorBlue;
             
