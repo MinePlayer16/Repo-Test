@@ -43,8 +43,6 @@ if (cls !== "0x0") {
         } else {
             log("[Dock-JS] Error: Could not create UIColor pointer.");
         }
-        
-        // 4. Pulizia della memoria (FONDAMENTALE per i tweak statici per non lasciare leak nella RAM)
         r_msg2(remoteStr, "release");
     } else {
         log("[Dock-JS] Error: Could not find Dock background view. (was only tested on iOS 18)");
