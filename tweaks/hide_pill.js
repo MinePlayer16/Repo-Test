@@ -1,59 +1,53 @@
-log("[SearchPill-JS] Hiding SBFolderScrollAccessoryView...");
+log("[Hide Search Pill] Running script...");
 
-var homeWindowCls = r_class("SBHomeScreenWindow");
-var accessoryCls  = r_class("SBFolderScrollAccessoryView");
-var iconListCls   = r_class("SBIconListView"); 
+var accessoryCls = r_class("SBFolderScrollAccessoryView");
 
-if (accessoryCls === "0x0") {
-    log("[SearchPill-JS] SBFolderScrollAccessoryView not found.");
-} else {
-    var app = r_msg2_main(r_class("UIApplication"), "sharedApplication");
-    var windows = r_msg2_main(app, "windows");
-    var winCount = parseInt(r_msg2_main(windows, "count"), 16);
+var ctrl = r_msg2_main(r_class("SBIconController"), "sharedInstance");
+var mgr = r_msg2_main(ctrl, "iconManager");
+var rootFC = r_msg2_main(mgr, "rootFolderController");
+if (rootFC === "0x0") rootFC = r_msg2_main(mgr, "_rootFolderController");
+
+if (rootFC !== "0x0") {
+    var folderView = r_msg2_main(rootFC, "folderView");
     
-    var homeWindow = "0x0";
-    for (var i = 0; i < winCount; i++) {
-        var win = r_msg2_main(windows, "objectAtIndex:", i);
-        if (r_msg2_main(win, "class") === homeWindowCls) {
-            homeWindow = win;
-            break;
-        }
-    }
-    
-    if (homeWindow === "0x0") {
-        log("[SearchPill-JS] SBHomeScreenWindow not found.");
-    } else {
-        var found = false; // flag to exit the loop
-        
-        function fastFindAndHide(view, depth) {
-            if (view === "0x0" || depth > 8 || found) return;
+    if (folderView !== "0x0") {
+        var subs = r_msg2_main(folderView, "subviews");
+        if (subs !== "0x0") {
+            var c = parseInt(r_msg2_main(subs, "count"));
+            var found = false;
             
-            var cls = r_msg2_main(view, "class");
-            if (cls === iconListCls) return; // Skip icons
-            
-            if (cls === accessoryCls) {
-                r_msg2_main(view, "setHidden:", 1);
-                
-                found = true; //to exit the loop
-                log("[SearchPill-JS] Hid AccessoryView at depth " + depth);
-                return;
-            }
-            
-            var subviews = r_msg2_main(view, "subviews");
-            if (subviews !== "0x0") {
-                var childCount = parseInt(r_msg2_main(subviews, "count"), 16);
-                for (var j = 0; j < childCount; j++) {
-                    if (found) break;
-                    var child = r_msg2_main(subviews, "objectAtIndex:", j);
-                    fastFindAndHide(child, depth + 1);
+            for (var i = 0; i < c; i++) {
+                var sub = r_msg2_main(subs, "objectAtIndex:", i);
+                if (r_msg2_main(sub, "class") === accessoryCls) {
+                    r_msg2_main(sub, "setHidden:", 1);
+                    log("[Hide Search Pill] Search Pill hidden.");
+                    found = true;
+                    break;
                 }
+                
+                // checking 1 level under
+                var subSubs = r_msg2_main(sub, "subviews");
+                if (subSubs !== "0x0") {
+                    var sc = parseInt(r_msg2_main(subSubs, "count"));
+                    for (var j = 0; j < sc; j++) {
+                        var ss = r_msg2_main(subSubs, "objectAtIndex:", j);
+                        if (r_msg2_main(ss, "class") === accessoryCls) {
+                            r_msg2_main(ss, "setHidden:", 1);
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+                if (found) break;
+            }
+            
+            if (!found) {
+                log("[Hide Search Pill] Search Pill not found (could be already hidden).");
             }
         }
-        
-        fastFindAndHide(homeWindow, 0);
-        
-        if (!found) {
-            log("[SearchPill-JS] Could not find the AccessoryView.");
-        }
+    } else {
+        log("[Hide Search Pill] ERROR: folderView not found.");
     }
+} else {
+    log("[Hide Search Pill] ERROR: RootFolderController non found.");
 }
