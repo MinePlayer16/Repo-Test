@@ -1,4 +1,9 @@
-log("[Dump-Views] 5s Timer: Load the views you need...");
+// @param: slider | delaySec | Delay (Seconds) | 5 | 0-20
+
+var delayTime = (typeof delaySec !== 'undefined') ? parseInt(delaySec) * 1000 : 5000;
+var displaySec = delayTime / 1000;
+
+log("[Dump-Views] " + displaySec + "s Timer: Load the views you need...");
 
 setTimeout(function() {
     log("[Dump-Views] Generating dump...");
@@ -68,4 +73,4 @@ setTimeout(function() {
     } else {
         log("[Dump-Views] ERROR: No visible view found.");
     }
-}, 5000);
+}, delayTime);
