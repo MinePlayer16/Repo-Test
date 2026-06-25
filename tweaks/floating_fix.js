@@ -1,15 +1,14 @@
-// floating_fix.js
+// floating_icons_tracer.js
 // @param: slider | floatY | Vertical Float | 12.0 | 0.0-30.0
 // @param: slider | floatX | Horizontal Float | 5.0 | 0.0-20.0
 // @param: slider | floatRot | Rotation | 0.035 | 0.0-0.1
 // @param: slider | minScale | Min Scale | 0.98 | 0.8-1.0
-// Root-served Cyanide RepoTweak. Fixed rootFolderController path.
 
 (function () {
     "use strict";
 
-    var VERSION = "1.0.1";
-    say("[Floating Icons] Running v" + VERSION + " Fixed...");
+    var VERSION = "1.0.0-TRACER";
+    say("[DEBUG-TRACER] Avvio script v" + VERSION + "...");
 
     function say(msg) {
         try { if (typeof log === "function") { log(String(msg)); return; } } catch (_) {}
@@ -32,8 +31,27 @@
         if (typeof v === "string") return v !== "" && v !== "0" && v !== "0x0";
         return !!v;
     }
-    function responds(obj, sel) { if (!isPtr(obj)) return false; try { return typeof r_responds === "function" ? truthy(r_responds(obj, sel)) : true; } catch (_) { return false; } }
-    function call(obj, sel, main, a1, a2, a3, a4) { if (!isPtr(obj) || !responds(obj, sel)) return 0; return main ? msgMain(obj, sel, a1, a2, a3, a4) : msg(obj, sel, a1, a2, a3, a4); }
+    
+    function responds(obj, sel) { 
+        say("[DEBUG-TRACER] Controllo respondsToSelector per: " + sel);
+        if (!isPtr(obj)) return false; 
+        try { 
+            return typeof r_responds === "function" ? truthy(r_responds(obj, sel)) : true; 
+        } catch (_) { 
+            return false; 
+        } 
+    }
+    
+    function call(obj, sel, main, a1, a2, a3, a4) { 
+        say("[DEBUG-TRACER] Eseguo call() per: " + sel);
+        if (!isPtr(obj) || !responds(obj, sel)) {
+            say("[DEBUG-TRACER] FALLITO o saltato call() per: " + sel);
+            return 0; 
+        }
+        var res = main ? msgMain(obj, sel, a1, a2, a3, a4) : msg(obj, sel, a1, a2, a3, a4); 
+        say("[DEBUG-TRACER] SUCCESSO call() per: " + sel + " -> " + String(res));
+        return res;
+    }
 
     function clampNumber(value, lo, hi, def) {
         var n = Number(value);
@@ -75,22 +93,25 @@
     var animScale = createAnim("transform.scale", curScale.toString(), "1.0", "5.1");
 
     function iconManager() {
+        say("[DEBUG-TRACER] Cerco SBIconController...");
         var ctrl = msg(cls("SBIconController"), "sharedInstance");
+        say("[DEBUG-TRACER] Cerco iconManager...");
         return msg(ctrl, "iconManager");
     }
 
-    //fix iOS18 (fallback)
-    function getRootController(mgr) {
-        var rc = call(mgr, "rootFolderController", false);
-        if (!isPtr(rc)) rc = call(mgr, "_rootFolderController", false);
-        return rc;
-    }
-
     function rootFolderView(mgr) {
-        var rootController = getRootController(mgr); // Usiamo il fix qui
+        say("[DEBUG-TRACER] Dentro rootFolderView(), cerco rootFolderController...");
+        var rootController = call(mgr, "rootFolderController", false);
+        
+        say("[DEBUG-TRACER] Cerco rootFolderView...");
         var rootView = call(rootController, "rootFolderView", true);
+        
+        say("[DEBUG-TRACER] Cerco rootFolderViewIfLoaded (se serve)...");
         if (!isPtr(rootView)) rootView = call(rootController, "rootFolderViewIfLoaded", true);
+        
+        say("[DEBUG-TRACER] Cerco folderView (se serve)...");
         if (!isPtr(rootView)) rootView = call(rootController, "folderView", true);
+        
         return rootView;
     }
 
@@ -99,6 +120,7 @@
         var key = String(view);
         for (var i = 0; i < targets.length; i++) if (String(targets[i].view) === key) return;
         targets.push({ view: view, label: label });
+        say("[DEBUG-TRACER] Aggiunto target alla lista: " + label);
     }
 
     function applyAnimations(view, label) {
@@ -115,23 +137,43 @@
         return true;
     }
 
+    // --- ESECUZIONE PRINCIPALE ---
+    
+    say("[DEBUG-TRACER] --- FASE 1: Inizializzazione ---");
     var mgr = iconManager();
+    say("[DEBUG-TRACER] mgr ottenuto: " + String(mgr));
+    
     var rootView = rootFolderView(mgr);
+    say("[DEBUG-TRACER] rootView ottenuto: " + String(rootView));
+    
     var targets = [];
 
-    // Dock list
+    say("[DEBUG-TRACER] --- FASE 2: Ricerca Bersagli ---");
+    
+    say("[DEBUG-TRACER] TENTATIVO 1: dockListView da mgr...");
     addTarget(targets, call(mgr, "dockListView", false), "dockListView");
+
+    say("[DEBUG-TRACER] TENTATIVO 2: dockListView da rootView...");
     addTarget(targets, call(rootView, "dockListView", true), "rootFolderView.dockListView");
 
-    // Home icons
+    say("[DEBUG-TRACER] TENTATIVO 3: scrollView da rootView...");
     addTarget(targets, call(rootView, "scrollView", true), "rootFolderView.scrollView");
     
-    var rootController = getRootController(mgr); // Usiamo il fix anche qui
+    say("[DEBUG-TRACER] TENTATIVO 4: rootFolderController isolato...");
+    var rootController = call(mgr, "rootFolderController", false);
+    
+    say("[DEBUG-TRACER] TENTATIVO 5: folderView isolata...");
     var folderView = call(rootController, "folderView", true);
+    
+    say("[DEBUG-TRACER] TENTATIVO 6: scrollView da folderView...");
     addTarget(targets, call(folderView, "scrollView", true), "folderView.scrollView");
 
+    say("[DEBUG-TRACER] --- FASE 3: Applicazione Animazioni ---");
     var applied = 0;
-    for (var i = 0; i < targets.length; i++) if (applyAnimations(targets[i].view, targets[i].label)) applied++;
+    for (var i = 0; i < targets.length; i++) {
+        say("[DEBUG-TRACER] Applico animazione a: " + targets[i].label);
+        if (applyAnimations(targets[i].view, targets[i].label)) applied++;
+    }
 
     say(applied > 0 ? "[Floating Icons] SUCCESS: applied animation to " + applied + " layer(s)." : "[Floating Icons] ERROR: no icon layers found.");
 })();
