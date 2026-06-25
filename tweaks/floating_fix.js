@@ -8,7 +8,7 @@
 (function () {
     "use strict";
 
-    var VERSION = "1.0.0";
+    var VERSION = "1.0.0-FINAL-FIX";
     say("[Floating Icons] Running v" + VERSION + "...");
 
     function say(msg) {
@@ -81,6 +81,10 @@
 
     function rootFolderView(mgr) {
         var rootController = call(mgr, "rootFolderController", false);
+        
+        // [FIX 1 MINIMALE]: Il nostro salvavita se rootFolderController non esiste.
+        if (!isPtr(rootController)) rootController = call(mgr, "_rootFolderController", false);
+
         var rootView = call(rootController, "rootFolderView", true);
         if (!isPtr(rootView)) rootView = call(rootController, "rootFolderViewIfLoaded", true);
         if (!isPtr(rootView)) rootView = call(rootController, "folderView", true);
@@ -112,15 +116,13 @@
     var rootView = rootFolderView(mgr);
     var targets = [];
 
-    // Dock list: iOS 26 SBHIconManager/rootFolderView paths plus legacy controller fallback.
+    // Dock list: animiamo la dock in modo sicuro passando solo per il manager
     addTarget(targets, call(mgr, "dockListView", false), "dockListView");
-    addTarget(targets, call(rootView, "dockListView", true), "rootFolderView.dockListView");
 
-    // Home icons: animate the scroll view that owns icon list pages.
-    addTarget(targets, call(rootView, "scrollView", true), "rootFolderView.scrollView");
-    var rootController = call(mgr, "rootFolderController", false);
-    var folderView = call(rootController, "folderView", true);
-    addTarget(targets, call(folderView, "scrollView", true), "folderView.scrollView");
+    // [FIX 2 MINIMALE]: Home icons: animiamo la GRIGLIA delle icone (currentIconListView) e NON la scrollView!
+    var iconGrid = call(rootView, "currentIconListView", true);
+    if (!isPtr(iconGrid)) iconGrid = call(rootView, "iconListView", true);
+    addTarget(targets, iconGrid, "rootFolderView.iconListView");
 
     var applied = 0;
     for (var i = 0; i < targets.length; i++) if (applyAnimations(targets[i].view, targets[i].label)) applied++;
